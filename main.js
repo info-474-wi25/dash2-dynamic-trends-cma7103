@@ -20,11 +20,19 @@ const svg2_RENAME = d3.select("#lineChart2")
 
 // (If applicable) Tooltip element for interactivity
 // const tooltip = ...
+let parseDate = d3.timeParse("%m/%d/%Y");
 
 // 2.a: LOAD...
-d3.csv("YOUR_CSV_NAME.csv").then(data => {
+d3.csv("weather.csv").then(data => {
+    
     // 2.b: ... AND TRANSFORM DATA
+    data.forEach(d => {
+        d.date = parseDate(d.date);
+        d.temperature = +d.temperature;  
 
+    });
+    // console.log(data);
+    // console.log(typeof data[0].date);
     // 3.a: SET SCALES FOR CHART 1
 
 
