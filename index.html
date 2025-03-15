@@ -24,6 +24,7 @@
     
                 <div class="select-container">
                     <select id="categorySelect">
+                        <option value="all" selected>All Cities</option>
                         <option value="Indianapolis">Indianapolis</option>
                         <option value="Charlotte">Charlotte</option>
                         <option value="Chicago">Chicago</option>
@@ -42,7 +43,9 @@
 
     <!-- CHART(S) -->
     <div class="item chart-container">
-        <h2>Tempurature Comparions between different cities</h2>
+        <!-- <h2>Tempurature Comparison between different cities</h2> -->
+        <h2 id="chartTitle">Temperature Trends in Different cities</h2>
+
         <svg id="lineChart1" width="900" height="400"></svg> <!-- If you change this ID name, you must change it in main.js too -->
     </div>
     

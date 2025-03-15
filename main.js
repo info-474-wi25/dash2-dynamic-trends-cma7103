@@ -85,6 +85,7 @@ d3.csv("weather.csv").then(data => {
         .data(cityData)
         .enter()
         .append("path")
+        .attr("class", "city-line")
         .style("stroke", d => colorScale(d[0]))
         .style("fill", "none")
         .style("stroke-width", 2)
@@ -121,7 +122,7 @@ d3.csv("weather.csv").then(data => {
         .attr("y", -margin.left + 20)
         .attr("x", -height / 2)
         .attr("text-anchor", "middle")
-        .text("Tempurature");
+        .text("Average Temperature (°F)");
 
     const legend = svg1_Line.selectAll(".legend")
         .data(cityData.map(d => d[0]))
@@ -146,31 +147,51 @@ d3.csv("weather.csv").then(data => {
         .text(d => d);
 
     // 7.a: ADD INTERACTIVITY FOR CHART 1
-    function updateChart(selectedCategory) {
-        // Filter the data based on the selected category
-        var selectedCategoryData = flattenedData.filter(function (d) {
-            return d.city === selectedCategory;
+    function updateChart(selectedCity) {
+    svg1_Line.selectAll(".city-line").remove();
+
+    if (selectedCity === "all") {
+   
+        cityData.forEach(([city, values]) => {
+            svg1_Line.append("path")
+                .datum(values)
+                .attr("class", "city-line")
+                .attr("fill", "none")
+                .attr("stroke", colorScale(city))
+                .attr("stroke-width", 2)
+                .attr("d", line);
         });
-    
-        // Remove existing lines
-        svg1_Line.selectAll("path").remove();
-    
-        // Redraw lines
+        
+        d3.selectAll(".legend").style("display", "block");
+        d3.select("#chartTitle").text("Temperature Trends in Different Cities");
+    } else {
+        var selectedCategoryData = flattenedData.filter(d => d.city === selectedCity);
         svg1_Line.append("path")
             .datum(selectedCategoryData)
             .attr("class", "city-line")
             .attr("fill", "none")
-            .attr("stroke", colorScale(selectedCategory))
+            .attr("stroke", colorScale(selectedCity))
             .attr("stroke-width", 2)
             .attr("d", line);
+
+        
+        d3.selectAll(".legend").style("display", "none");
+
+        
+        d3.select("#chartTitle").text(`Temperature Trends in ${selectedCity}`);
     }
+}
     
     // updateChart("Chicago");
     // Event listener for when the dropdown selection changes
     d3.select("#categorySelect").on("change", function () {
-        var selectedCategory = d3.select(this).property("value");
-        updateChart(selectedCategory); 
+        var selectedCity = d3.select(this).property("value");
+        updateChart(selectedCity);
     });
+
+    
+
+    
 
 
 
